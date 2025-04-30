@@ -8,10 +8,9 @@ import (
 
 func main() {
 	ctx := context.Background()
-	logger.Info(ctx, "start")
 
 	cartService := core.NewService(ctx)
 	if err := cartService.Run(); err != nil {
-		logger.Fatalf(ctx, "Failed to start service: %v", err)
+		logger.Fatalf(ctx, "Failed to start cart-service: %v", err)
 	}
 }

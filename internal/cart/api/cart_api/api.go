@@ -9,6 +9,7 @@ import (
 type API interface {
 	GetHandlers() []HttpAPIHandler
 	AddItem() func(http.ResponseWriter, *http.Request)
+	DeleteItem() func(http.ResponseWriter, *http.Request)
 }
 
 type api struct {
@@ -26,6 +27,10 @@ func (a *api) GetHandlers() []HttpAPIHandler {
 		{
 			Pattern: fmt.Sprintf("%s /user/{%s}/cart/{%s}", http.MethodPost, "user_id", "sku_id"),
 			Handler: a.AddItem(),
+		},
+		{
+			Pattern: fmt.Sprintf("%s /user/{%s}/cart/{%s}", http.MethodDelete, "user_id", "sku_id"),
+			Handler: a.DeleteItem(),
 		},
 	}
 }

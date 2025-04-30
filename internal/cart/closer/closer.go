@@ -53,7 +53,7 @@ func (c *closer) CloseAll() {
 	var once sync.Once
 	once.Do(func() {
 		ctx := context.Background()
-		logger.Info(ctx, "graceful shutdown started...")
+		logger.Info(ctx, "graceful shutdown started")
 		defer logger.Info(ctx, "graceful shutdown finished")
 
 		defer close(c.done)

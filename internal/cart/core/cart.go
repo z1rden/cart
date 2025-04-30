@@ -37,7 +37,7 @@ func NewService(ctx context.Context) Service {
 }
 
 func (s *service) Run() error {
-	logger.Info(s.ctx, "cartService is starting...")
+	logger.Info(s.ctx, "cartService is starting")
 	defer logger.Info(s.ctx, "cartService finished")
 
 	closer := s.serviceProvider.GetCloser()
@@ -50,10 +50,11 @@ func (s *service) Run() error {
 	closer.Add(httpServer.Stop)
 
 	go func() {
-		logger.Info(s.ctx, "http cartService server is starting on localhost:8080...")
+		logger.Infof(s.ctx, "http cartService server is starting on localhost:%s", s.cfg.HttpPort)
 		err := httpServer.Run()
 		if err != nil {
-			logger.Errorf(s.ctx, "failed to start http cartService server: %v", err)
+			logger.Errorf(s.ctx, "failed to start http cartService server on localhost:%s : %v",
+				s.cfg.HttpPort, err)
 			closer.CloseAll()
 		}
 	}()
