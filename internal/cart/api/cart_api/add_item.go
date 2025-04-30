@@ -38,13 +38,24 @@ func (a *api) AddItem() func(w http.ResponseWriter, r *http.Request) {
 func toAddItemRequest(ctx context.Context, r *http.Request) (*AddItemRequest, error) {
 	const operation = "api.toAddItemRequest"
 
-	userID, _ := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
-	skuID, _ := strconv.ParseInt(r.PathValue("sku_id"), 10, 64)
+	userID, err := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
+	if err != nil {
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
+
+		return nil, fmt.Errorf("userID is not valid: %s", err)
+	}
+
+	skuID, err := strconv.ParseInt(r.PathValue("sku_id"), 10, 64)
+	if err != nil {
+		logger.Errorf(ctx, "%s: skuID is not valid: %v", operation, err)
+
+		return nil, fmt.Errorf("skuID is not valid: %s", err)
+	}
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
 		logger.Errorf(ctx, "%s: failed to read body: %v", operation, err)
-		
+
 		return nil, err
 	}
 
