@@ -8,8 +8,8 @@ import (
 type Storage interface {
 	AddItem(ctx context.Context, userID int64, skuID int64, count uint16) error
 	DeleteItem(ctx context.Context, userID int64, skuID int64) error
-	GetItemsByUserID(ctx context.Context, userID int64) (*Cart, error)
-	DeleteItemsByUserID(ctx context.Context, userID int64) error
+	GetCartByUserID(ctx context.Context, userID int64) (*Cart, error)
+	DeleteCartByUserID(ctx context.Context, userID int64) error
 }
 
 var cartStorage = map[int64]*Cart{}

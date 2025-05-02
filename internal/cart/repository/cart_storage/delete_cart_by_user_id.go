@@ -4,7 +4,7 @@ import (
 	"context"
 )
 
-func (s *storage) DeleteItemsByUserID(ctx context.Context, userID int64) error {
+func (s *storage) DeleteCartByUserID(ctx context.Context, userID int64) error {
 	s.Lock()
 	defer s.Unlock()
 

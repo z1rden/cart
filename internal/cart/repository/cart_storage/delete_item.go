@@ -13,12 +13,12 @@ func (s *storage) DeleteItem(ctx context.Context, userID int64, skuID int64) err
 		return nil
 	}
 
-	_, exists = cart.items[skuID]
+	_, exists = cart.Items[skuID]
 	if !exists {
 		return nil
 	}
 
-	delete(cart.items, skuID)
+	delete(cart.Items, skuID)
 
 	return nil
 }
