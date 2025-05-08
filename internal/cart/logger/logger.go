@@ -1,7 +1,6 @@
 package logger
 
 import (
-	"cart/internal/cart/config"
 	"context"
 	"errors"
 	"fmt"
@@ -23,9 +22,8 @@ func NewLogger(opts ...ConfigOption) *Logger {
 		panic(err)
 	}
 
-	// TODO может сделать как-то иначе с загрузкой конфига?
-	cfg := config.MustLoad()
-	l = l.With(zap.String("app", cfg.AppName))
+	// TODO можно ли как-то аккуратно вытащить из конфига, чтобы тесты не поехали? относительный путь меняется при запуске тестов.
+	l = l.With(zap.String("app", "cart"))
 
 	return &Logger{
 		logger: l,
