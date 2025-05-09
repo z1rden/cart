@@ -1,13 +1,14 @@
 package cart_api
 
 import (
+	"cart/internal/cart/model"
 	"cart/internal/cart/service/cart_service"
 	"fmt"
 	"net/http"
 )
 
 type API interface {
-	GetHandlers() []HttpAPIHandler
+	GetHandlers() []model.HttpAPIHandler
 	AddItem() func(http.ResponseWriter, *http.Request)
 	DeleteItem() func(http.ResponseWriter, *http.Request)
 	DeleteCartByUserID() func(http.ResponseWriter, *http.Request)
@@ -24,8 +25,8 @@ func NewApi(cartService cart_service.Service) API {
 	}
 }
 
-func (a *api) GetHandlers() []HttpAPIHandler {
-	return []HttpAPIHandler{
+func (a *api) GetHandlers() []model.HttpAPIHandler {
+	return []model.HttpAPIHandler{
 		{
 			Pattern: fmt.Sprintf("%s /user/{%s}/cart/{%s}", http.MethodPost, "user_id", "sku_id"),
 			Handler: a.AddItem(),

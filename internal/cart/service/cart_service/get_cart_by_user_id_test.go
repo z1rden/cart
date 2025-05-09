@@ -1,9 +1,10 @@
-package cart_service
+package cart_service_test
 
 import (
 	"cart/internal/cart/clients/product_service"
 	"cart/internal/cart/model"
 	"cart/internal/cart/repository/cart_storage"
+	"cart/internal/cart/service/cart_service"
 	"cart/internal/cart/suite"
 	"context"
 	"github.com/go-test/deep"
@@ -22,7 +23,7 @@ func TestServiceGetCartByUserID(t *testing.T) {
 		Name                        string
 		UserID                      int64
 		CartStorage                 *cart_storage.Cart
-		CartService                 *Cart
+		CartService                 *cart_service.Cart
 		StorageGetCartByUserIDError error
 		ProductsClient              []*testProduct
 		ClientGetProductError       error
@@ -52,8 +53,8 @@ func TestServiceGetCartByUserID(t *testing.T) {
 					3: 3,
 				},
 			},
-			CartService: &Cart{
-				Items: []*Item{
+			CartService: &cart_service.Cart{
+				Items: []*cart_service.Item{
 					{
 						SkuID:    1,
 						Name:     "example 1",
@@ -106,7 +107,7 @@ func TestServiceGetCartByUserID(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
 			sp := suite.NewSuiteProvider()
-			s := NewService(
+			s := cart_service.NewService(
 				sp.GetCartStorage(),
 				sp.GetProductService(),
 			)

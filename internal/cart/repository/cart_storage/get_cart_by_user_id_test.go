@@ -1,7 +1,8 @@
-package cart_storage
+package cart_storage_test
 
 import (
 	"cart/internal/cart/model"
+	"cart/internal/cart/repository/cart_storage"
 	"context"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -9,7 +10,7 @@ import (
 
 func TestStorageGetCartByUserId(t *testing.T) {
 	ctx := context.Background()
-	s := NewStorage()
+	s := cart_storage.NewStorage()
 
 	cart, err := s.GetCartByUserID(ctx, 1)
 	assert.ErrorIs(t, err, model.ErrNotFound, "Должна вернуться ошибка, так как корзины "+

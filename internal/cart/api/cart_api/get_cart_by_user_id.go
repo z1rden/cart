@@ -49,7 +49,7 @@ func (a *api) GetCartByUserID() func(http.ResponseWriter, *http.Request) {
 
 		w.Header().Add("Content-Type", "application/json")
 		w.WriteHeader(http.StatusOK)
-		
+
 		_, err = w.Write(jsonCart)
 		if err != nil {
 			logger.Errorf(ctx, "%s: failed to write response: %v", operation, err)
@@ -68,6 +68,16 @@ func toGetCartByUserIDRequest(ctx context.Context, r *http.Request) (int64, erro
 		logger.Errorf(ctx, "%s: failed to parse user_id: %v", operation, err)
 
 		return 0, err
+	}
+
+	if userID < 1 {
+		err := fmt.Errorf("userID must be positive: %d", userID)
+		if userID == 0 {
+			err = fmt.Errorf("userID must be present")
+		}
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
+
+		return 0, fmt.Errorf("userID is not valid: %s", err)
 	}
 
 	return userID, nil

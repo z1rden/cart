@@ -12,6 +12,7 @@ type Closer interface {
 	Add(f ...func() error)
 	CloseAll()
 	Wait()
+	Signal()
 }
 
 type closer struct {
@@ -73,4 +74,8 @@ func (c *closer) CloseAll() {
 
 func (c *closer) Wait() {
 	<-c.done
+}
+
+func (c *closer) Signal() {
+	c.shutdown <- os.Interrupt
 }

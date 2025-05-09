@@ -17,3 +17,11 @@ PHONY: test
 test:
 	$(info Run tests...)
 	go test -v -race ./...
+
+.PHONY: coverage.out
+coverage.out:
+	go test -v ./... -coverprofile=coverage.out
+
+.PHONY: cover-test
+cover-test: coverage.out
+	go tool cover -html=coverage.out
