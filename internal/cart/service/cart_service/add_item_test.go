@@ -1,7 +1,8 @@
-package cart_service
+package cart_service_test
 
 import (
 	"cart/internal/cart/clients/product_service"
+	"cart/internal/cart/service/cart_service"
 	"cart/internal/cart/suite"
 	"context"
 	"errors"
@@ -57,11 +58,11 @@ func TestServiceAddItem(t *testing.T) {
 	}
 
 	t.Parallel()
-	
+
 	for _, tt := range tests {
 		t.Run(tt.Name, func(t *testing.T) {
 			sp := suite.NewSuiteProvider()
-			s := NewService(
+			s := cart_service.NewService(
 				sp.GetCartStorageMock(),
 				sp.GetProductServiceMock(),
 			)

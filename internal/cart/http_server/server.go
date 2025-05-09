@@ -1,8 +1,8 @@
 package http_server
 
 import (
-	"cart/internal/cart/api/cart_api"
 	"cart/internal/cart/logger"
+	"cart/internal/cart/model"
 	"context"
 	"errors"
 	"fmt"
@@ -13,7 +13,7 @@ import (
 type Server interface {
 	Run() error
 	Stop() error
-	AddHandlers(handlers []cart_api.HttpAPIHandler)
+	AddHandlers(handlers []model.HttpAPIHandler)
 }
 
 type server struct {
@@ -64,7 +64,7 @@ func (s *server) Stop() error {
 	return nil
 }
 
-func (s *server) AddHandlers(handlers []cart_api.HttpAPIHandler) {
+func (s *server) AddHandlers(handlers []model.HttpAPIHandler) {
 	for _, handler := range handlers {
 		s.mux.HandleFunc(
 			handler.Pattern,

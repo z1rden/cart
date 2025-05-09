@@ -5,6 +5,8 @@ import (
 	product_service_mock "cart/internal/cart/clients/product_service/mocks"
 	"cart/internal/cart/repository/cart_storage"
 	cart_storage_mock "cart/internal/cart/repository/cart_storage/mocks"
+	"cart/internal/cart/service/cart_service"
+	cart_service_mock "cart/internal/cart/service/cart_service/mocks"
 )
 
 type suiteProvider struct {
@@ -12,6 +14,8 @@ type suiteProvider struct {
 	cartStorageMock    *cart_storage_mock.StorageMock
 	productService     product_service.Client
 	productServiceMock *product_service_mock.ClientMock
+	cartService        cart_service.Service
+	cartServiceMock    *cart_service_mock.ServiceMock
 }
 
 func NewSuiteProvider() *suiteProvider {
@@ -48,4 +52,20 @@ func (s *suiteProvider) GetProductService() product_service.Client {
 	}
 
 	return s.productService
+}
+
+func (s *suiteProvider) GetCartServiceMock() *cart_service_mock.ServiceMock {
+	if s.cartServiceMock == nil {
+		s.cartServiceMock = &cart_service_mock.ServiceMock{}
+	}
+
+	return s.cartServiceMock
+}
+
+func (s *suiteProvider) GetCartService() cart_service.Service {
+	if s.cartService == nil {
+		s.cartService = s.GetCartServiceMock()
+	}
+
+	return s.cartService
 }

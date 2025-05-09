@@ -1,4 +1,4 @@
-package cart_api
+package model
 
 import "net/http"
 

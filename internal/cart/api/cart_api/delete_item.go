@@ -4,6 +4,7 @@ import (
 	"cart/internal/cart/logger"
 	"context"
 	"fmt"
+	"github.com/gookit/validate"
 	"net/http"
 	"strconv"
 )
@@ -53,6 +54,11 @@ func toDeleteItemRequest(ctx context.Context, r *http.Request) (*DeleteItemReque
 	req := &DeleteItemRequest{
 		UserID: userID,
 		SkuID:  skuID,
+	}
+
+	v := validate.Struct(req)
+	if !v.Validate() {
+		return nil, v.Errors
 	}
 
 	return req, nil

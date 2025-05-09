@@ -1,6 +1,7 @@
-package cart_storage
+package cart_storage_test
 
 import (
+	"cart/internal/cart/repository/cart_storage"
 	"context"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -8,7 +9,7 @@ import (
 
 func TestStorageDeleteItem(t *testing.T) {
 	ctx := context.Background()
-	s := NewStorage()
+	s := cart_storage.NewStorage()
 
 	err := s.DeleteItem(ctx, 1, 1)
 	assert.NoError(t, err, "Ошибки не должно возникать при удалении продукта из пустой корзины")
