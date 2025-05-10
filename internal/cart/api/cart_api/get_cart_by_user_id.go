@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gookit/validate"
 	"net/http"
 	"strconv"
 )
@@ -17,7 +18,7 @@ func (a *api) GetCartByUserID() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 
-		userID, err := toGetCartByUserIDRequest(ctx, r)
+		req, err := toGetCartByUserIDRequest(ctx, r)
 		if err != nil {
 			logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
 			http.Error(w, fmt.Sprintf("user ID is not valid: %s", err), http.StatusBadRequest)
@@ -25,10 +26,10 @@ func (a *api) GetCartByUserID() func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
-		cart, err := a.cartService.GetCartByUserID(ctx, userID)
+		cart, err := a.cartService.GetCartByUserID(ctx, req.UserID)
 		if err != nil {
 			if errors.Is(err, model.ErrNotFound) {
-				http.Error(w, fmt.Sprintf("cart for user %d not found", userID), http.StatusNotFound)
+				http.Error(w, fmt.Sprintf("cart for user %d not found", req.UserID), http.StatusNotFound)
 
 				return
 			} else {
@@ -60,25 +61,24 @@ func (a *api) GetCartByUserID() func(http.ResponseWriter, *http.Request) {
 	}
 }
 
-func toGetCartByUserIDRequest(ctx context.Context, r *http.Request) (int64, error) {
+func toGetCartByUserIDRequest(ctx context.Context, r *http.Request) (*GetCartByUserIDRequest, error) {
 	const operation = "api.toGetCartByUserIDRequest"
 
 	userID, err := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
 	if err != nil {
 		logger.Errorf(ctx, "%s: failed to parse user_id: %v", operation, err)
 
-		return 0, err
+		return nil, err
 	}
 
-	if userID < 1 {
-		err := fmt.Errorf("userID must be positive: %d", userID)
-		if userID == 0 {
-			err = fmt.Errorf("userID must be present")
-		}
-		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
-
-		return 0, fmt.Errorf("userID is not valid: %s", err)
+	req := &GetCartByUserIDRequest{
+		UserID: userID,
 	}
 
-	return userID, nil
+	v := validate.Struct(req)
+	if !v.Validate() {
+		return nil, v.Errors
+	}
+
+	return req, nil
 }
