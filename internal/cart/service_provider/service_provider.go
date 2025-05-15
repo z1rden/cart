@@ -1,7 +1,7 @@
 package service_provider
 
 import (
-	"cart/internal/cart/closer"
+	"cart/pkg/closer"
 	"context"
 )
 

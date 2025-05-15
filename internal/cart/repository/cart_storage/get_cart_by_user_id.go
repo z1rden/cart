@@ -9,7 +9,7 @@ func (s *storage) GetCartByUserID(ctx context.Context, userID int64) (*Cart, err
 	s.RLock()
 	defer s.RUnlock()
 
-	cart, exists := cartStorage[userID]
+	cart, exists := s.cartStorage[userID]
 	if !exists {
 		return nil, model.ErrNotFound
 	}

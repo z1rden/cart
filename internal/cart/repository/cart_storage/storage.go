@@ -12,12 +12,13 @@ type Storage interface {
 	DeleteCartByUserID(ctx context.Context, userID int64) error
 }
 
-var cartStorage = map[int64]*Cart{}
-
 type storage struct {
 	sync.RWMutex
+	cartStorage map[int64]*Cart
 }
 
 func NewStorage() Storage {
-	return &storage{}
+	return &storage{
+		cartStorage: map[int64]*Cart{},
+	}
 }

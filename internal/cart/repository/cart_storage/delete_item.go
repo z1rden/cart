@@ -8,7 +8,7 @@ func (s *storage) DeleteItem(ctx context.Context, userID int64, skuID int64) err
 	s.Lock()
 	defer s.Unlock()
 
-	cart, exists := cartStorage[userID]
+	cart, exists := s.cartStorage[userID]
 	if !exists {
 		return nil
 	}
@@ -19,9 +19,9 @@ func (s *storage) DeleteItem(ctx context.Context, userID int64, skuID int64) err
 	}
 
 	delete(cart.Items, skuID)
-	
+
 	if len(cart.Items) == 0 {
-		delete(cartStorage, userID)
+		delete(s.cartStorage, userID)
 	}
 
 	return nil

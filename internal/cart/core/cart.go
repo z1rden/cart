@@ -13,21 +13,22 @@ type Service interface {
 }
 
 type service struct {
-	cfg             *config.Config
 	ctx             context.Context
 	serviceProvider *service_provider.ServiceProvider
+	cfg             *config.Config
 }
 
 func NewService(ctx context.Context) Service {
 	ctx, cancel := context.WithCancel(ctx)
 
 	sp := service_provider.GetServiceProvider(ctx)
-	sp.GetCloser().Add(func() error {
+	sp.GetCloser(ctx).Add(func() error {
 		cancel()
 		return nil
 	})
-
 	cfg := config.MustLoad()
+
+	logger.WithNameApp(ctx, cfg.AppName)
 
 	return &service{
 		ctx:             ctx,
@@ -40,21 +41,22 @@ func (s *service) Run() error {
 	logger.Info(s.ctx, "cartService is starting")
 	defer logger.Info(s.ctx, "cartService finished")
 
-	closer := s.serviceProvider.GetCloser()
+	closer := s.serviceProvider.GetCloser(s.ctx)
 	defer closer.Wait()
 
 	api := s.serviceProvider.GetApi()
 
-	httpServer := http_server.NewServer(s.ctx, s.cfg.HttpPort)
+	httpPort := s.cfg.HttpPort
+	httpServer := http_server.NewServer(s.ctx, httpPort)
 	httpServer.AddHandlers(api.GetHandlers())
 	closer.Add(httpServer.Stop)
 
 	go func() {
-		logger.Infof(s.ctx, "http cartService server is starting on localhost:%s", s.cfg.HttpPort)
+		logger.Infof(s.ctx, "http cartService server is starting on localhost:%s", httpPort)
 		err := httpServer.Run()
 		if err != nil {
 			logger.Errorf(s.ctx, "failed to start http cartService server on localhost:%s : %v",
-				s.cfg.HttpPort, err)
+				httpPort, err)
 			closer.CloseAll()
 		}
 	}()

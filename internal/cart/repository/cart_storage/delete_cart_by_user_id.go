@@ -8,9 +8,9 @@ func (s *storage) DeleteCartByUserID(ctx context.Context, userID int64) error {
 	s.Lock()
 	defer s.Unlock()
 
-	_, exists := cartStorage[userID]
+	_, exists := s.cartStorage[userID]
 	if exists {
-		delete(cartStorage, userID)
+		delete(s.cartStorage, userID)
 	}
 
 	return nil

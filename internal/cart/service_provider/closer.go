@@ -1,14 +1,14 @@
 package service_provider
 
 import (
-	"cart/internal/cart/closer"
-	"os"
+	"cart/pkg/closer"
+	"context"
 	"syscall"
 )
 
-func (s *ServiceProvider) GetCloser() closer.Closer {
+func (s *ServiceProvider) GetCloser(ctx context.Context) closer.Closer {
 	if s.closer == nil {
-		s.closer = closer.NewCloser(os.Interrupt, syscall.SIGINT, syscall.SIGTERM)
+		s.closer = closer.NewCloser(syscall.SIGINT, syscall.SIGTERM)
 	}
 
 	return s.closer

@@ -6,12 +6,12 @@ func (s *storage) AddItem(ctx context.Context, userID int64, skuID int64, count 
 	s.Lock()
 	defer s.Unlock()
 
-	cart, ok := cartStorage[userID]
+	cart, ok := s.cartStorage[userID]
 	if !ok {
 		cart = &Cart{
 			Items: map[int64]uint16{},
 		}
-		cartStorage[userID] = cart
+		s.cartStorage[userID] = cart
 	}
 
 	cart.Items[skuID] += count
