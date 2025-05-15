@@ -43,7 +43,6 @@ func (s *server) Run() error {
 	const operation = "server.Run"
 
 	if err := s.httpServer.ListenAndServe(); err != nil {
-
 		if !errors.Is(err, http.ErrServerClosed) {
 			return fmt.Errorf("%s: failed to start http server: %w", operation, err)
 		}
