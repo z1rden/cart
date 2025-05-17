@@ -43,6 +43,7 @@ func TestServiceDeleteCartByUserId(t *testing.T) {
 			s := cart_service.NewService(
 				sp.GetCartStorage(),
 				sp.GetProductService(),
+				sp.GetLomsServiceMock(),
 			)
 			ctx := context.Background()
 

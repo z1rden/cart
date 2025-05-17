@@ -9,9 +9,9 @@ packages:
     interfaces:
       Storage:
 
-  cart/internal/cart/clients/product_service:
+  cart/internal/cart/client/product_service:
     config:
-      dir: ./internal/cart/clients/product_service/mocks
+      dir: ./internal/cart/client/product_service/mocks
       filename: client_mock.go
       pkgname: mocks
       structname: "{{.InterfaceName}}Mock"
@@ -26,3 +26,12 @@ packages:
       structname: "{{.InterfaceName}}Mock"
     interfaces:
       Service:
+
+  cart/internal/cart/client/loms_service:
+    config:
+      dir: ./internal/cart/client/loms_service/mocks
+      filename: client_mock.go
+      pkgname: mocks
+      structname: "{{.InterfaceName}}Mock"
+    interfaces:
+      Client:
