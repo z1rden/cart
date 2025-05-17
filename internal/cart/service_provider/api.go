@@ -8,10 +8,10 @@ type api struct {
 	cartAPI cart_api.API
 }
 
-func (s *ServiceProvider) GetApi() cart_api.API {
+func (s *ServiceProvider) GetApi(port string) cart_api.API {
 	if s.api.cartAPI == nil {
 		s.api.cartAPI = cart_api.NewApi(
-			serviceProvider.GetCartService())
+			serviceProvider.GetCartService(port))
 	}
 
 	return s.api.cartAPI

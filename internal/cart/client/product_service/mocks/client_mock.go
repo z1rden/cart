@@ -5,7 +5,7 @@
 package mocks
 
 import (
-	"cart/internal/cart/clients/product_service"
+	"cart/internal/cart/client/product_service"
 	"context"
 
 	mock "github.com/stretchr/testify/mock"

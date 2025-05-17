@@ -1,11 +1,14 @@
 package service_provider
 
 import (
-	"cart/internal/cart/clients/product_service"
+	conn_client "cart/internal/cart/client"
+	"cart/internal/cart/client/loms_service"
+	"cart/internal/cart/client/product_service"
 )
 
 type client struct {
 	productService product_service.Client
+	lomsService    loms_service.Client
 }
 
 func (s *ServiceProvider) GetProductService() product_service.Client {
@@ -14,4 +17,12 @@ func (s *ServiceProvider) GetProductService() product_service.Client {
 	}
 
 	return s.client.productService
+}
+
+func (s *ServiceProvider) GetLomsService(port string) loms_service.Client {
+	if s.client.lomsService == nil {
+		s.client.lomsService = loms_service.NewClient(conn_client.GetClientConn(s.ctx, port))
+	}
+
+	return s.client.lomsService
 }

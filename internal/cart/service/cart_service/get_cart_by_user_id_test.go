@@ -1,7 +1,7 @@
 package cart_service_test
 
 import (
-	"cart/internal/cart/clients/product_service"
+	"cart/internal/cart/client/product_service"
 	"cart/internal/cart/model"
 	"cart/internal/cart/repository/cart_storage"
 	"cart/internal/cart/service/cart_service"
@@ -110,6 +110,7 @@ func TestServiceGetCartByUserID(t *testing.T) {
 			s := cart_service.NewService(
 				sp.GetCartStorage(),
 				sp.GetProductService(),
+				sp.GetLomsServiceMock(),
 			)
 			ctx := context.Background()
 

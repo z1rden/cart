@@ -6,8 +6,9 @@ import (
 )
 
 type Config struct {
-	AppName  string `yaml:"app_name"`
-	HttpPort string `yaml:"http_port"`
+	AppName             string `yaml:"app_name"`
+	HttpPort            string `yaml:"http_port"`
+	LomsServiceGrpcPort string `yaml:"loms_service_grpc_port"`
 }
 
 func MustLoad() *Config {

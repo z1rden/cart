@@ -5,7 +5,7 @@ import (
 	"context"
 )
 
-// Паттерн Singleton.
+// Паттерн Singleton
 var serviceProvider *ServiceProvider
 
 // ServiceProvider - это компонент, который используется для централизованного управления зависимостями и
