@@ -46,6 +46,11 @@ func TestApiCheckout(t *testing.T) {
 			CartServiceCheckoutError: CartServiceCheckoutError,
 			StatusCode:               http.StatusInternalServerError,
 		},
+		{
+			Name:        "Успешный тест",
+			RequestBody: &cart_api.CheckoutRequest{UserID: 2},
+			StatusCode:  http.StatusOK,
+		},
 	}
 
 	t.Parallel()
