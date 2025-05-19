@@ -2,7 +2,7 @@ package cart_service
 
 import (
 	"cart/internal/cart/client/loms_service"
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"context"
 	"fmt"
 )

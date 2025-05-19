@@ -2,7 +2,7 @@ package main
 
 import (
 	"cart/internal/cart/core"
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"context"
 )
 

@@ -1,7 +1,7 @@
 package closer_test
 
 import (
-	"cart/pkg/closer"
+	"cart/internal/cart/closer"
 	"errors"
 	"github.com/stretchr/testify/assert"
 	"os"

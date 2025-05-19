@@ -93,3 +93,58 @@ func (_c *ClientMock_OrderCreate_Call) RunAndReturn(run func(ctx context.Context
 	_c.Call.Return(run)
 	return _c
 }
+
+// StockInfo provides a mock function for the type ClientMock
+func (_mock *ClientMock) StockInfo(ctx context.Context, SkuID int64) (uint16, error) {
+	ret := _mock.Called(ctx, SkuID)
+
+	if len(ret) == 0 {
+		panic("no return value specified for StockInfo")
+	}
+
+	var r0 uint16
+	var r1 error
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int64) (uint16, error)); ok {
+		return returnFunc(ctx, SkuID)
+	}
+	if returnFunc, ok := ret.Get(0).(func(context.Context, int64) uint16); ok {
+		r0 = returnFunc(ctx, SkuID)
+	} else {
+		r0 = ret.Get(0).(uint16)
+	}
+	if returnFunc, ok := ret.Get(1).(func(context.Context, int64) error); ok {
+		r1 = returnFunc(ctx, SkuID)
+	} else {
+		r1 = ret.Error(1)
+	}
+	return r0, r1
+}
+
+// ClientMock_StockInfo_Call is a *mock.Call that shadows Run/Return methods with type explicit version for method 'StockInfo'
+type ClientMock_StockInfo_Call struct {
+	*mock.Call
+}
+
+// StockInfo is a helper method to define mock.On call
+//   - ctx
+//   - SkuID
+func (_e *ClientMock_Expecter) StockInfo(ctx interface{}, SkuID interface{}) *ClientMock_StockInfo_Call {
+	return &ClientMock_StockInfo_Call{Call: _e.mock.On("StockInfo", ctx, SkuID)}
+}
+
+func (_c *ClientMock_StockInfo_Call) Run(run func(ctx context.Context, SkuID int64)) *ClientMock_StockInfo_Call {
+	_c.Call.Run(func(args mock.Arguments) {
+		run(args[0].(context.Context), args[1].(int64))
+	})
+	return _c
+}
+
+func (_c *ClientMock_StockInfo_Call) Return(v uint16, err error) *ClientMock_StockInfo_Call {
+	_c.Call.Return(v, err)
+	return _c
+}
+
+func (_c *ClientMock_StockInfo_Call) RunAndReturn(run func(ctx context.Context, SkuID int64) (uint16, error)) *ClientMock_StockInfo_Call {
+	_c.Call.Return(run)
+	return _c
+}

@@ -1,7 +1,7 @@
 package cart_api
 
 import (
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"context"
 	"fmt"
 	"github.com/gookit/validate"

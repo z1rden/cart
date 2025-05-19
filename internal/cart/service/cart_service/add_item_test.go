@@ -13,29 +13,31 @@ import (
 
 func TestServiceAddItem(t *testing.T) {
 	type test struct {
-		Name                string
-		UserID              int64
-		SkuID               int64
-		Count               uint16
-		Product             *product_service.Product
-		ClientError         error
-		StorageAddItemError error
-		Error               error
+		Name                          string
+		UserID                        int64
+		SkuID                         int64
+		Count                         uint16
+		Product                       *product_service.Product
+		ProductServiceGetProductError error
+		StorageAddItemError           error
+		LomsServiceStockInfoError     error
+		Error                         error
 	}
 
 	var (
-		StorageAddItemError = errors.New("Возникла проблема с добавлением в Storage")
-		ClientError         = errors.New("Возникла проблема при получении товара из другого сервиса")
+		StorageAddItemError           = errors.New("Возникла проблема с добавлением в Storage")
+		ProductServiceGetProductError = errors.New("Возникла проблема при получении товара из сервиса product service")
+		LomsServiceStockInfoError     = errors.New("Возникла проблема при получении количества оставшихся товаров из сервиса loms service")
 	)
 
 	var tests = []test{
 		{
-			Name:        "Отсутствие товара в productService",
-			UserID:      1,
-			SkuID:       1,
-			Count:       1,
-			ClientError: ClientError,
-			Error:       ClientError,
+			Name:                          "Отсутствие товара в productService",
+			UserID:                        1,
+			SkuID:                         1,
+			Count:                         1,
+			ProductServiceGetProductError: ProductServiceGetProductError,
+			Error:                         ProductServiceGetProductError,
 		},
 		{
 			Name:                "Ошибка при добавлении в Storage",
@@ -44,6 +46,14 @@ func TestServiceAddItem(t *testing.T) {
 			Count:               1,
 			StorageAddItemError: StorageAddItemError,
 			Error:               StorageAddItemError,
+		},
+		{
+			Name:                      "Ошибка при получении количества оставшихся товаров из loms service",
+			UserID:                    1,
+			SkuID:                     1,
+			Count:                     1,
+			LomsServiceStockInfoError: LomsServiceStockInfoError,
+			Error:                     LomsServiceStockInfoError,
 		},
 		{
 			Name:   "Успешный тест",
@@ -71,7 +81,11 @@ func TestServiceAddItem(t *testing.T) {
 
 			sp.GetProductServiceMock().EXPECT().
 				GetProduct(mock.Anything, tt.SkuID).
-				Return(tt.Product, tt.ClientError)
+				Return(tt.Product, tt.ProductServiceGetProductError)
+
+			sp.GetLomsServiceMock().EXPECT().
+				StockInfo(mock.Anything, tt.SkuID).
+				Return(tt.Count, tt.LomsServiceStockInfoError)
 
 			sp.GetCartStorageMock().EXPECT().
 				AddItem(mock.Anything, tt.UserID, tt.SkuID, tt.Count).

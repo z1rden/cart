@@ -1,7 +1,7 @@
 package cart_service
 
 import (
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"context"
 	"sort"
 )

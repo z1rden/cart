@@ -1,10 +1,10 @@
 package core
 
 import (
+	"cart/internal/cart/config"
 	"cart/internal/cart/http_server"
+	"cart/internal/cart/logger"
 	"cart/internal/cart/service_provider"
-	"cart/pkg/config"
-	"cart/pkg/logger"
 	"context"
 )
 

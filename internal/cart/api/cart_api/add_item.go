@@ -1,8 +1,8 @@
 package cart_api
 
 import (
+	"cart/internal/cart/logger"
 	"cart/internal/cart/model"
-	"cart/pkg/logger"
 	"context"
 	"encoding/json"
 	"errors"

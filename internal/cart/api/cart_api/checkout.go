@@ -1,8 +1,8 @@
 package cart_api
 
 import (
+	"cart/internal/cart/logger"
 	"cart/internal/cart/model"
-	"cart/pkg/logger"
 	"context"
 	"encoding/json"
 	"errors"
@@ -25,7 +25,7 @@ func (a *api) Checkout() func(http.ResponseWriter, *http.Request) {
 			return
 		}
 
-		orderID, err := a.cartService.Checkout(r.Context(), req.UserID)
+		orderID, err := a.cartService.Checkout(ctx, req.UserID)
 		if err != nil {
 			logger.Errorf(ctx, "%s: failed to checkout: %v", operation, err)
 			if errors.Is(err, model.ErrNotFound) {
@@ -74,7 +74,7 @@ func toCheckoutResponse(ctx context.Context, w http.ResponseWriter, orderID int6
 		OrderID: orderID,
 	}
 
-	json, err := json.Marshal(resp)
+	respJson, err := json.Marshal(resp)
 	if err != nil {
 		logger.Errorf(ctx, "%s: failed to marshal response: %v", operation, err)
 		http.Error(w, "internal error", http.StatusInternalServerError)
@@ -85,7 +85,7 @@ func toCheckoutResponse(ctx context.Context, w http.ResponseWriter, orderID int6
 	w.Header().Add("Content-Type", "application/json")
 	w.WriteHeader(http.StatusOK)
 
-	_, err = w.Write(json)
+	_, err = w.Write(respJson)
 	if err != nil {
 		logger.Errorf(ctx, "%s: failed to write response: %v", operation, err)
 		http.Error(w, "internal error", http.StatusInternalServerError)

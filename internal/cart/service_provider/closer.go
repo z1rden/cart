@@ -1,7 +1,7 @@
 package service_provider
 
 import (
-	"cart/pkg/closer"
+	"cart/internal/cart/closer"
 	"context"
 	"syscall"
 )

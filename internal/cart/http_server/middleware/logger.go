@@ -1,7 +1,7 @@
 package middleware
 
 import (
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"net/http"
 )
 

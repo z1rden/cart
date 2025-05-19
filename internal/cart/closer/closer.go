@@ -1,7 +1,7 @@
 package closer
 
 import (
-	"cart/pkg/logger"
+	"cart/internal/cart/logger"
 	"context"
 	"os"
 	"os/signal"

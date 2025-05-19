@@ -2,8 +2,8 @@ package http_server
 
 import (
 	"cart/internal/cart/http_server/middleware"
+	"cart/internal/cart/logger"
 	"cart/internal/cart/model"
-	"cart/pkg/logger"
 	"context"
 	"errors"
 	"fmt"
