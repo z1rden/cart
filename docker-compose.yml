@@ -1,6 +1,0 @@
-services:
-  cart:
-    image: cart
-    build: ./
-    ports:
-      - "8080:8080"

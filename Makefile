@@ -3,6 +3,9 @@ LOCAL_BIN:=$(CURDIR)/bin
 run:
 	go run ./cmd/cart
 
+build:
+	go build -o ./bin/cart ./cmd/cart
+
 PHONY: .bin-mock
 .bin-mock:
 	$(info Installing mockery...)
