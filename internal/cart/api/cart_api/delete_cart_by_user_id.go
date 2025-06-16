@@ -4,6 +4,7 @@ import (
 	"cart/internal/cart/logger"
 	"context"
 	"fmt"
+	"github.com/gookit/validate"
 	"net/http"
 	"strconv"
 )
@@ -13,7 +14,7 @@ func (a *api) DeleteCartByUserID() func(w http.ResponseWriter, r *http.Request) 
 
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
-		userID, err := toDeleteCartByUserIdRequest(ctx, r)
+		req, err := toDeleteCartByUserIdRequest(ctx, r)
 		if err != nil {
 			logger.Errorf(ctx, "%s: request is not valid: %v", operation, err)
 			http.Error(w, fmt.Sprintf("request is not valid: %v", err), http.StatusBadRequest)
@@ -21,7 +22,7 @@ func (a *api) DeleteCartByUserID() func(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		err = a.cartService.DeleteCartByUserId(ctx, userID)
+		err = a.cartService.DeleteCartByUserId(ctx, req.UserID)
 		if err != nil {
 			logger.Errorf(ctx, "%s: failed to delete cart by userId: %v", operation, err)
 			http.Error(w, fmt.Sprintf("failed to delete cart by userId: %v", err), http.StatusInternalServerError)
@@ -33,25 +34,24 @@ func (a *api) DeleteCartByUserID() func(w http.ResponseWriter, r *http.Request) 
 	}
 }
 
-func toDeleteCartByUserIdRequest(ctx context.Context, r *http.Request) (int64, error) {
+func toDeleteCartByUserIdRequest(ctx context.Context, r *http.Request) (*DeleteItemsByUserIDRequest, error) {
 	const operation = "api.toDeleteCartByUserIDRequest"
 
 	userID, err := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
 	if err != nil {
 		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
 
-		return 0, fmt.Errorf("userID is not valid: %s", err)
+		return nil, fmt.Errorf("userID is not valid: %s", err)
 	}
 
-	if userID < 1 {
-		err := fmt.Errorf("userID must be positive: %d", userID)
-		if userID == 0 {
-			err = fmt.Errorf("userID must be present")
-		}
-		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
-
-		return 0, fmt.Errorf("userID is not valid: %s", err)
+	req := &DeleteItemsByUserIDRequest{
+		UserID: userID,
 	}
 
-	return userID, nil
+	v := validate.Struct(req)
+	if !v.Validate() {
+		return nil, v.Errors
+	}
+
+	return req, nil
 }

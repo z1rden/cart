@@ -1,6 +1,7 @@
 package http_server
 
 import (
+	"cart/internal/cart/http_server/middleware"
 	"cart/internal/cart/logger"
 	"cart/internal/cart/model"
 	"context"
@@ -42,7 +43,6 @@ func (s *server) Run() error {
 	const operation = "server.Run"
 
 	if err := s.httpServer.ListenAndServe(); err != nil {
-
 		if !errors.Is(err, http.ErrServerClosed) {
 			return fmt.Errorf("%s: failed to start http server: %w", operation, err)
 		}
@@ -68,6 +68,7 @@ func (s *server) AddHandlers(handlers []model.HttpAPIHandler) {
 	for _, handler := range handlers {
 		s.mux.HandleFunc(
 			handler.Pattern,
-			handler.Handler)
+			middleware.Logger(
+				handler.Handler))
 	}
 }

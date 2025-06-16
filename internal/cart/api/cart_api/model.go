@@ -14,3 +14,11 @@ type DeleteItemRequest struct {
 	UserID int64 `validate:"required|int|min:1"`
 	SkuID  int64 `validate:"required|int|min:1"`
 }
+
+type GetCartByUserIDRequest struct {
+	UserID int64 `validate:"required|int|min:1"`
+}
+
+type DeleteItemsByUserIDRequest struct {
+	UserID int64 `validate:"required|int|min:1"`
+}

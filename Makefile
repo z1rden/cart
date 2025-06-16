@@ -20,8 +20,10 @@ test:
 
 .PHONY: coverage.out
 coverage.out:
+	$(info Generate coverage.out...)
 	go test -v ./... -coverprofile=coverage.out
 
 .PHONY: cover-test
 cover-test: coverage.out
+	$(info Reading coverage.out...)
 	go tool cover -html=coverage.out
