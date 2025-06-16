@@ -9,6 +9,7 @@ import (
 type Service interface {
 	AddItem(ctx context.Context, userID int64, skuID int64, count uint16) error
 	DeleteItem(ctx context.Context, userID int64, skuID int64) error
+	DeleteCartByUserId(ctx context.Context, userID int64) error
 }
 
 type service struct {

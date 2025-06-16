@@ -72,7 +72,7 @@ func (l *Logger) Error(ctx context.Context, m string) {
 }
 
 func (l *Logger) Errorf(ctx context.Context, m string, args ...any) {
-	l.logger.Warn(fmt.Sprintf(m, args...))
+	l.logger.Error(fmt.Sprintf(m, args...))
 }
 
 func (l *Logger) Panic(ctx context.Context, m string) {
@@ -100,7 +100,7 @@ func Infof(ctx context.Context, m string, args ...any) {
 }
 
 func Warn(ctx context.Context, m string) {
-	logger.Info(ctx, m)
+	logger.Warn(ctx, m)
 }
 
 func Warnf(ctx context.Context, m string, args ...any) {

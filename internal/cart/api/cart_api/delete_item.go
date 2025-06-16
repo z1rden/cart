@@ -34,13 +34,19 @@ func (a *api) DeleteItem() func(w http.ResponseWriter, r *http.Request) {
 }
 
 func toDeleteItemRequest(ctx context.Context, r *http.Request) (*DeleteItemRequest, error) {
+	const operation = "api.toDeleteItemRequest"
+
 	userID, err := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
 	if err != nil {
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
+
 		return nil, err
 	}
 
 	skuID, err := strconv.ParseInt(r.PathValue("sku_id"), 10, 64)
 	if err != nil {
+		logger.Errorf(ctx, "%s: skuID is not valid: %v", operation, err)
+
 		return nil, err
 	}
 
