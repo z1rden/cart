@@ -34,11 +34,21 @@ func (a *api) DeleteCartByUserID() func(w http.ResponseWriter, r *http.Request) 
 }
 
 func toDeleteCartByUserIdRequest(ctx context.Context, r *http.Request) (int64, error) {
-	const operatuion = "api.toDeleteCartByUserIDRequest"
+	const operation = "api.toDeleteCartByUserIDRequest"
 
 	userID, err := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
 	if err != nil {
-		logger.Errorf(ctx, "%s: userID is not valid: %v", operatuion, err)
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
+
+		return 0, fmt.Errorf("userID is not valid: %s", err)
+	}
+
+	if userID < 1 {
+		err := fmt.Errorf("userID must be positive: %d", userID)
+		if userID == 0 {
+			err = fmt.Errorf("userID must be present")
+		}
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
 
 		return 0, fmt.Errorf("userID is not valid: %s", err)
 	}

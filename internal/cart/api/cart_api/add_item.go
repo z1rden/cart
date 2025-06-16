@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/gookit/validate"
 	"io"
 	"net/http"
 	"strconv"
@@ -79,6 +80,11 @@ func toAddItemRequest(ctx context.Context, r *http.Request) (*AddItemRequest, er
 		UserID:   userID,
 		SkuID:    skuID,
 		Quantity: data.Count,
+	}
+
+	v := validate.Struct(req)
+	if !v.Validate() {
+		return nil, v.Errors
 	}
 
 	return req, nil

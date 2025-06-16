@@ -70,5 +70,15 @@ func toGetCartByUserIDRequest(ctx context.Context, r *http.Request) (int64, erro
 		return 0, err
 	}
 
+	if userID < 1 {
+		err := fmt.Errorf("userID must be positive: %d", userID)
+		if userID == 0 {
+			err = fmt.Errorf("userID must be present")
+		}
+		logger.Errorf(ctx, "%s: userID is not valid: %v", operation, err)
+
+		return 0, fmt.Errorf("userID is not valid: %s", err)
+	}
+
 	return userID, nil
 }
