@@ -7,7 +7,7 @@ import (
 )
 
 func NewConfig(opts ...ConfigOption) *zap.Config {
-	config := zap.NewDevelopmentConfig()
+	config := zap.NewProductionConfig()
 
 	// Название «атомный» связано с тем, что операции по установке и получению уровня автоматически синхронизированы:
 	// даже если несколько потоков пытаются читать или записывать уровень одновременно, они не будут влиять друг на
@@ -16,6 +16,7 @@ func NewConfig(opts ...ConfigOption) *zap.Config {
 	config.OutputPaths = []string{"stdout"}
 	config.EncoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout(time.RFC3339)
 	config.DisableCaller = true
+	config.DisableStacktrace = true
 
 	for _, opt := range opts {
 		opt(&config)

@@ -19,6 +19,10 @@ func (s *storage) DeleteItem(ctx context.Context, userID int64, skuID int64) err
 	}
 
 	delete(cart.Items, skuID)
+	
+	if len(cart.Items) == 0 {
+		delete(cartStorage, userID)
+	}
 
 	return nil
 }
