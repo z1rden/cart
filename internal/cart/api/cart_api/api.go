@@ -13,6 +13,7 @@ type API interface {
 	DeleteItem() func(http.ResponseWriter, *http.Request)
 	DeleteCartByUserID() func(http.ResponseWriter, *http.Request)
 	GetCartByUserID() func(http.ResponseWriter, *http.Request)
+	Checkout() func(http.ResponseWriter, *http.Request)
 }
 
 type api struct {
@@ -42,6 +43,10 @@ func (a *api) GetHandlers() []model.HttpAPIHandler {
 		{
 			Pattern: fmt.Sprintf("%s /user/{%s}/cart", http.MethodGet, "user_id"),
 			Handler: a.GetCartByUserID(),
+		},
+		{
+			Pattern: fmt.Sprintf("%s /cart/checkout", http.MethodPost),
+			Handler: a.Checkout(),
 		},
 	}
 }

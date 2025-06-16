@@ -44,7 +44,7 @@ func (s *service) Run() error {
 	closer := s.serviceProvider.GetCloser(s.ctx)
 	defer closer.Wait()
 
-	api := s.serviceProvider.GetApi()
+	api := s.serviceProvider.GetApi(s.cfg.LomsServiceGrpcHost)
 
 	httpPort := s.cfg.HttpPort
 	httpServer := http_server.NewServer(s.ctx, httpPort)

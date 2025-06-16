@@ -1,8 +1,10 @@
 package suite
 
 import (
-	"cart/internal/cart/clients/product_service"
-	product_service_mock "cart/internal/cart/clients/product_service/mocks"
+	"cart/internal/cart/client/loms_service"
+	loms_service_mock "cart/internal/cart/client/loms_service/mocks"
+	"cart/internal/cart/client/product_service"
+	product_service_mock "cart/internal/cart/client/product_service/mocks"
 	"cart/internal/cart/repository/cart_storage"
 	cart_storage_mock "cart/internal/cart/repository/cart_storage/mocks"
 	"cart/internal/cart/service/cart_service"
@@ -16,6 +18,8 @@ type suiteProvider struct {
 	productServiceMock *product_service_mock.ClientMock
 	cartService        cart_service.Service
 	cartServiceMock    *cart_service_mock.ServiceMock
+	lomsService        loms_service.Client
+	lomsServiceMock    *loms_service_mock.ClientMock
 }
 
 func NewSuiteProvider() *suiteProvider {
@@ -68,4 +72,20 @@ func (s *suiteProvider) GetCartService() cart_service.Service {
 	}
 
 	return s.cartService
+}
+
+func (s *suiteProvider) GetLomsServiceMock() *loms_service_mock.ClientMock {
+	if s.lomsServiceMock == nil {
+		s.lomsServiceMock = &loms_service_mock.ClientMock{}
+	}
+
+	return s.lomsServiceMock
+}
+
+func (s *suiteProvider) GetLomsService() loms_service.Client {
+	if s.lomsServiceMock == nil {
+		s.lomsServiceMock = s.GetLomsServiceMock()
+	}
+
+	return s.lomsServiceMock
 }

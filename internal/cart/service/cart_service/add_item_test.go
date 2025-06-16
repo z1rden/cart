@@ -1,7 +1,7 @@
 package cart_service_test
 
 import (
-	"cart/internal/cart/clients/product_service"
+	"cart/internal/cart/client/product_service"
 	"cart/internal/cart/service/cart_service"
 	"cart/internal/cart/suite"
 	"context"
@@ -65,6 +65,7 @@ func TestServiceAddItem(t *testing.T) {
 			s := cart_service.NewService(
 				sp.GetCartStorageMock(),
 				sp.GetProductServiceMock(),
+				sp.GetLomsServiceMock(),
 			)
 			ctx := context.Background()
 
