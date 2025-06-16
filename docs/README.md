@@ -1,5 +1,11 @@
 # cart - сервис корзины.
 
+## Практика git
+Ниже представлено старое дерево git.
+![cart-cart-old-tree-git](img/cart-cart-old-tree-git.png)
+Оно было переделано.
+![cart-cart-new-tree-git](img/cart-cart-new-tree-git.png)
+
 ## Особенности
 
 1. Используется HTTP, на основе стандартной библиотеки Go.
