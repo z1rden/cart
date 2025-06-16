@@ -6,7 +6,7 @@ import (
 )
 
 type Client interface {
-	GetProduct(ctx context.Context, skuID int64) (uint16, error)
+	GetProduct(ctx context.Context, skuID int64) error
 }
 
 type client struct {
@@ -25,11 +25,11 @@ func NewClient() Client {
 	}
 }
 
-func (c *client) GetProduct(ctx context.Context, skuID int64) (uint16, error) {
-	quantity, exists := c.storage[skuID]
+func (c *client) GetProduct(ctx context.Context, skuID int64) error {
+	_, exists := c.storage[skuID]
 	if !exists {
-		return 0, errors.New("sku not found")
+		return errors.New("sku not found")
 	}
 
-	return quantity, nil
+	return nil
 }

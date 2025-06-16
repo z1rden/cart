@@ -39,10 +39,12 @@ func NewServer(ctx context.Context, port string) Server {
 }
 
 func (s *server) Run() error {
+	const operation = "server.Run"
+
 	if err := s.httpServer.ListenAndServe(); err != nil {
 
 		if !errors.Is(err, http.ErrServerClosed) {
-			return fmt.Errorf("failed to start http server: %w", err)
+			return fmt.Errorf("%s: failed to start http server: %w", operation, err)
 		}
 	}
 
@@ -50,12 +52,15 @@ func (s *server) Run() error {
 }
 
 func (s *server) Stop() error {
+	const operation = "server.Stop"
+
 	err := s.httpServer.Shutdown(s.ctx)
 	if err != nil {
-		logger.Errorf(s.ctx, "failed to stop http server: %v", err)
+		logger.Errorf(s.ctx, "%s: failed to stop http server: %v", operation, err)
 		return fmt.Errorf("failed to stop http server: %w", err)
 	}
-	logger.Info(s.ctx, "http server is stopped successfully")
+
+	logger.Infof(s.ctx, "%s: http server is stopped successfully", operation)
 	return nil
 }
 

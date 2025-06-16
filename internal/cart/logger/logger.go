@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"go.uber.org/zap"
 	"io/fs"
+	"os"
 	"syscall"
 )
 
@@ -35,13 +36,14 @@ func Close() error {
 	if logger != nil && logger.logger != nil {
 		err := logger.logger.Sync()
 
-		//иначе будет выкидывать ошибку
+		// TODO Разобраться подробнее: иначе будет выкидывать ошибку.
 		var pathErr *fs.PathError
 		if errors.Is(err, syscall.ENOTTY) || errors.As(err, &pathErr) {
 			return nil
 		}
 
 		if err != nil {
+			fmt.Fprintf(os.Stderr, "failed to close logger: %v", err)
 			return err
 		}
 	}

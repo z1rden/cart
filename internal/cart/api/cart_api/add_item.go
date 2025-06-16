@@ -11,18 +11,23 @@ import (
 )
 
 func (a *api) AddItem() func(w http.ResponseWriter, r *http.Request) {
+	const operation = "api.AddItem"
+
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 		req, err := toAddItemRequest(ctx, r)
 		if err != nil {
-			logger.Errorf(ctx, "handleAddItem: request is not valid: %v", err)
+			logger.Errorf(ctx, "%s: request is not valid: %v", operation, err)
 			http.Error(w, fmt.Sprintf("request is not valid: %s", err), http.StatusBadRequest)
+
 			return
 		}
 
 		err = a.cartService.AddItem(r.Context(), req.UserID, req.SkuID, req.Quantity)
 		if err != nil {
-			logger.Errorf(ctx, "handleAddItem failed to add item: %v", err)
+			logger.Errorf(ctx, "%s: failed to add item: %v", operation, err)
+			http.Error(w, fmt.Sprintf("failed to add item: %s", err), http.StatusInternalServerError)
+
 			return
 		}
 
@@ -31,18 +36,23 @@ func (a *api) AddItem() func(w http.ResponseWriter, r *http.Request) {
 }
 
 func toAddItemRequest(ctx context.Context, r *http.Request) (*AddItemRequest, error) {
+	const operation = "api.toAddItemRequest"
+
 	userID, _ := strconv.ParseInt(r.PathValue("user_id"), 10, 64)
 	skuID, _ := strconv.ParseInt(r.PathValue("sku_id"), 10, 64)
 
 	body, err := io.ReadAll(r.Body)
 	if err != nil {
+		logger.Errorf(ctx, "%s: failed to read body: %v", operation, err)
+		
 		return nil, err
 	}
 
 	data := &AddItemRequestBody{}
 	err = json.Unmarshal(body, data)
 	if err != nil {
-		logger.Errorf(ctx, "handleAddItem: failed to unmarshal body json: %v", err)
+		logger.Errorf(ctx, "%s: failed to unmarshal body json: %v", operation, err)
+
 		return nil, err
 	}
 
