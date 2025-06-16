@@ -128,3 +128,17 @@
 ### Диаграмма последовательности
 
 ![cart-cart-list](img/cart-cart-list.png)
+
+## Особенности
+
+1. Сделан Middleware между клиентом и http-сервером, который логирует поступающие запросы.
+2. Написаны unit-тесты
+   - слоя UseCase(service/cart_service) для каждого запроса;
+   - слоя Repository(repository/cart_storage) сервиса Cart;
+   - слоя Api(api/cart_api) сервиса Cart;
+   - для Closer.
+
+   Процент покрытия тестируемых слоев более 60%.
+
+   Для создания моков использовалась библиотека github.com/vektra/mockery/v3@v3.2.5.
+3. Создан Makefile, показывающий основной функционал сервиса.
