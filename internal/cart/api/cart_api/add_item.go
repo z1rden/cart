@@ -2,8 +2,10 @@ package cart_api
 
 import (
 	"cart/internal/cart/logger"
+	"cart/internal/cart/model"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
@@ -25,10 +27,16 @@ func (a *api) AddItem() func(w http.ResponseWriter, r *http.Request) {
 
 		err = a.cartService.AddItem(r.Context(), req.UserID, req.SkuID, req.Quantity)
 		if err != nil {
-			logger.Errorf(ctx, "%s: failed to add item: %v", operation, err)
-			http.Error(w, fmt.Sprintf("failed to add item: %s", err), http.StatusInternalServerError)
+			if errors.Is(err, model.ErrNotFound) {
+				http.Error(w, fmt.Sprintf("skuID %d not found: %s", req.SkuID, err), http.StatusNotFound)
 
-			return
+				return
+			} else {
+				logger.Errorf(ctx, "%s: failed to add item: %v", operation, err)
+				http.Error(w, fmt.Sprintf("failed to add item: %s", err), http.StatusInternalServerError)
+
+				return
+			}
 		}
 
 		w.WriteHeader(http.StatusOK)

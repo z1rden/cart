@@ -21,7 +21,13 @@ func (a *api) DeleteCartByUserID() func(w http.ResponseWriter, r *http.Request) 
 			return
 		}
 
-		a.cartService.DeleteCartByUserId(ctx, userID)
+		err = a.cartService.DeleteCartByUserId(ctx, userID)
+		if err != nil {
+			logger.Errorf(ctx, "%s: failed to delete cart by userId: %v", operation, err)
+			http.Error(w, fmt.Sprintf("failed to delete cart by userId: %v", err), http.StatusInternalServerError)
+
+			return
+		}
 
 		w.WriteHeader(http.StatusNoContent)
 	}

@@ -1,17 +1,17 @@
 package cart_storage
 
 import (
+	"cart/internal/cart/model"
 	"context"
-	"errors"
 )
 
-func (s *storage) GetItemsByUserID(ctx context.Context, userID int64) (*Cart, error) {
+func (s *storage) GetCartByUserID(ctx context.Context, userID int64) (*Cart, error) {
 	s.RLock()
 	defer s.RUnlock()
 
 	cart, exists := cartStorage[userID]
 	if !exists {
-		return nil, errors.New("cart for user not found")
+		return nil, model.ErrNotFound
 	}
 
 	return cart, nil

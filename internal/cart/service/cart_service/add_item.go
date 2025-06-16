@@ -8,7 +8,7 @@ import (
 func (s *service) AddItem(ctx context.Context, userID int64, skuID int64, count uint16) error {
 	const operation = "cart_service.AddItem"
 
-	err := s.productService.GetProduct(ctx, skuID)
+	_, err := s.productService.GetProduct(ctx, skuID)
 	if err != nil {
 		logger.Errorf(ctx, "%s: failed to get product: %v", operation, err)
 

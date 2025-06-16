@@ -10,7 +10,7 @@ func (s *service) DeleteItem(ctx context.Context, userID int64, skuID int64) err
 
 	err := s.cartStorage.DeleteItem(ctx, userID, skuID)
 	if err != nil {
-		logger.Errorf(ctx, "cart_service.DeleteItem err: %v", err)
+		logger.Errorf(ctx, "%s: failed to delete item from cart: %v", operation, err)
 
 		return err
 	}
